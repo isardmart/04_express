@@ -10,9 +10,20 @@ const langtext=['Hola Món','Hello Wêreld!', 'Përshendetje Botë!', 'ሰላም
 app.listen(4040,()=>{
     console.log('serving my master port 4040')
 })
+
 app.get('/',(req,res)=>{
     res.send('Hello World!')
 })
+
+app.get('/:lang/:update/:content',(req,res)=>{
+    if (req.params.update==='update') {
+        let idx=langlist.indexOf(req.params.lang.toLowerCase());
+        res.send({ ok: true, data: `${req.params.lang} updated from ${langtext[idx]} to ${req.params.content}` })
+        langtext[idx]=req.params.content;
+    }
+    })
+
+
 
 app.get('/:lang/:add',(req,res)=>{
     if (req.params.add&&!(langlist.includes(req.params.lang.toLowerCase()))){
