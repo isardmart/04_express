@@ -37,7 +37,6 @@ app.get('/:accountID/withdraw/:amount',(req,res)=>{
     if(!(idx)){
         res.send({ ok: true, data: '404 resource not found' })
     } else if (accounts[idx-1]){
-        console.log(accounts,accounts[idx-1],accounts[idx-1]['balance'],'>=',req.params.amount,accounts[idx-1]['balance']>=req.params.amount)
             if(accounts[idx-1]['balance']>=req.params.amount){
             accounts[idx-1].balance-=req.params.amount;
             res.send({ ok: true, data: `${req.params.amount} euros taken from account num ${req.params.accountID}`})
@@ -67,7 +66,7 @@ app.get('/:accountID/balance',(req,res)=>{
     if(!(idx)){
         res.send({ ok: true, data: '404 resource not found' })
     } else if (accounts[idx-1]){
-        res.send({ ok: true, data:accounts[idx-1].balance })
+        res.send({ ok: true, data: accounts[idx-1].balance })
             
     }else{
         res.send({ ok: true, data: 'Account not found' })
