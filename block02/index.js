@@ -12,10 +12,7 @@ const DB =[]
 
 app.post('/category/add',(req,res)=>{
     if(DB.findIndex((element) => element.category === req.body.category)===-1){
-        let newcat={};
-        newcat['category']=req.body.category;
-        newcat['products']=[];
-        DB.push(newcat);
+        DB.push({ category: req.body.category, products: [] });
         res.send({ ok: true, data: `Category ${req.body.category} added successfully` })
     }else{
         res.send({ ok: true, data: `Category ${req.body.category} already exists` })
@@ -30,7 +27,7 @@ app.post('/category/delete',(req,res)=>{
         DB.splice(idx,1);
         res.send({ ok: true, data: `Category ${req.body.category} deleted successfully` })
     }else{
-        res.send({ ok: true, data: `Category ${req.body.category} deleted successfully` })
+        res.send({ ok: true, data: `Category ${req.body.category} not found` })
     }
     console.log(DB);
 })
@@ -71,11 +68,16 @@ app.get('/category/:category',(req,res)=>{
 })
 app.post('/product/add',(req,res)=>{
     let idx=DB.findIndex(value=>value.category===req.body.category)
-    if(idx!==-1){
+    if(idx!==-1&&id===-1){
         let prod=JSON.parse(req.body.product);
+        let id=DB[idx].products.findIndex(value=>value.name===prod.name)
+        if (id===-1){
         DB[idx].products.push(prod)
         res.send({ ok: true, data: `product ${prod.name} added successfully` })
         console.log(DB)
+        }else{
+        res.send({ ok: true, data: `product ${prod.name} already exists` })
+        }
     } else{
         res.send({ ok: true, data: `Category ${req.body.category} not found`})
     }
@@ -86,8 +88,12 @@ app.post('/product/delete',(req,res)=>{
     if(idx!==-1){
         let prod=JSON.parse(req.body.product)
         let id=DB[idx].products.findIndex(value=>value.name===prod.name)
+        if (id!==-1){
         DB[idx].products.splice(id,1)
         res.send({ ok: true, data: `product ${prod.name} deleted successfully` })
+        } else{
+        res.send({ ok: true, data: `product ${prod.name} not found` })
+        }
     } else{
         res.send({ ok: true, data: `Category ${req.body.category} not found`})
 
@@ -98,14 +104,14 @@ app.post('/product/update',(req,res)=>{
     let idx=DB.findIndex(value=>value.category===req.body.category)
     if(idx!==-1){
         let oldprod=JSON.parse(req.body.old_product)
-        console.log(oldprod)
         let newprod=JSON.parse(req.body.new_product)
-        console.log(newprod)
         let id=DB[idx].products.findIndex(value=>value.name===oldprod.name)
-        console.log(id)
+        if (id!==-1){
         DB[idx].products[id].name=newprod.name
-        console.log(DB[idx].products[id],DB[idx].products[id].name)
         res.send({ ok: true, data: `product ${newprod.name} updated successfully`})
+        }else{
+        res.send({ ok: true, data: `product ${prod.name} not found` })
+        }
     } else{
         res.send({ ok: true, data: `Category ${req.body.category} not found`})
     }

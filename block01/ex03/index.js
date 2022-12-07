@@ -10,6 +10,26 @@ const langtext=['Hola Món','Hello Wêreld!', 'Përshendetje Botë!', 'ሰላም
 app.listen(4040,()=>{
     console.log('serving my master port 4040')
 })
+
+app.get("/:language/remove", (req, res) => {
+    let {lang} = req.params
+    let idx=langlist.indexOf(lang.toLowerCase());
+               langlist.splice(idx,1);
+               langtext.splice(idx,1);
+               res.send({ ok: true, data: `${lang} removed` })
+   });
+   
+   app.get('/:lang/:add',(req,res)=>{
+   let {lang, add} = req.params
+       if (add &&!(langlist.includes(lang.toLowerCase()))){
+           langlist.push(lang.toLowerCase());
+           langtext.push(add);
+           res.send({ ok: true, data: `${land} added with message ${add}`})
+       } else if (langlist.includes(lang.toLowerCase())){
+           res.send({ ok: true, data: `Action forbidden, ${lang} is already present in the system` })
+       }
+   })
+/*   
 app.get('/',(req,res)=>{
     res.send('Hello World!')
 })
@@ -28,7 +48,7 @@ app.get('/:lang/:add',(req,res)=>{
         }
         res.send({ ok: true, data: `Action forbidden, ${req.params.lang} is already present in the system` })
     }
-})
+})*/
 app.get('/:lang',(req,res)=>{
     if (langlist.includes(req.params.lang.toLowerCase())){
         let idx=langlist.indexOf(req.params.lang.toLowerCase());

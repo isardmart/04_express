@@ -27,11 +27,7 @@ app.get('/account/new/:accountID/:amount',(req,res)=>{
     }
 })
 
-app.get('/:string',(req,res)=>{
-    if(!(req.params.string*1)){
-        res.send({ ok: true, data: '404 resource not found' })
-    }
-})
+
 app.get('/:accountID/withdraw/:amount',(req,res)=>{
     const idx=req.params.accountID*1;
     if(!(idx)){
@@ -84,7 +80,9 @@ app.get('/:accountID/delete',(req,res)=>{
         res.send({ ok: true, data: 'Account not found' })
     }
 })
-
+app.get("/*", (req, res) => {
+    res.send({ ok: true, data: "404 Page Not Found" });
+  });
 /*
         let newobj=accountdefault;
         let maxId=accounts.sort((a, b) => b.id - a.id)[0].id

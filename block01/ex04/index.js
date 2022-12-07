@@ -15,12 +15,10 @@ app.get('/',(req,res)=>{
     res.send({ok:true,data:'Hello World!'})
 })
 
-app.get('/:lang/:update/:content',(req,res)=>{
-    if (req.params.update==='update') {
+app.get('/:lang/update/:content',(req,res)=>{
         let idx=langlist.indexOf(req.params.lang.toLowerCase());
         res.send({ ok: true, data: `${req.params.lang} updated from ${langtext[idx]} to ${req.params.content}` })
         langtext[idx]=req.params.content;
-    }
     })
 
 
