@@ -1,9 +1,11 @@
-const app =require('express')();
-const port =4040;
-const mongoose =require("mongoose")
-app.use(require('express').json());
-app.use(require('express').urlencoded({extended:true}));
-//tonigali:ODhbmNmEifUawZyG
+const express=require('express'),
+    app =express(),
+    port =4040,
+    mongoose =require("mongoose")
+
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
 async function connecting(){
     try {
         await mongoose.connect("mongodb+srv://productsdb.zltowpx.mongodb.net/myFirstDatabase")
@@ -13,6 +15,7 @@ async function connecting(){
     }
     }
     connecting()
+
 
 app.use('/product',require('./routes/product'));
 app.use('/category',require('./routes/category'))
