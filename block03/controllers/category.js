@@ -16,7 +16,7 @@ class Categories {
     async delete (req,res){
         let{category}=req.body;
         try{
-            const done =await categories.remove({category})
+            const done =await categories.deleteOne({category})
         }
         catch(e){
             res.send({e})

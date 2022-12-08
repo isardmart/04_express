@@ -67,7 +67,6 @@
 > GET http://localhost:4040/product/banana
 > Response: { ok: true, data: "Product banana doesn't exist" }
 
-> GET http://localhost:4040/category/hats
 > Response: { ok: true, data: [ { name: 'cowboy hat', price: '10', color: 'black', description: 'best hat in town', category: "hats" } ] }
 
 > GET http://localhost:4040/category/banana
