@@ -40,18 +40,18 @@
 
 > POST http://localhost:4040/category/add
 > Request's body object: { category: 'hats' }
-> Response: { ok: true, data: 'Category hats added successfully' }
+> Response: { ok: true, data: 'Category hats added successfully' } --
 
 > POST http://localhost:4040/category/add
 > Request's body object: { category: 'hats' }
-> Response: { ok: true, data: 'Category hats already exists' }
+> Response: { ok: true, data: 'Category hats already exists' } --
 
 > POST http://localhost:4040/category/add
 > Request's body object: { category: "jackets" }
-> Response: { ok: true, data: 'Category jackets added successfully' }
+> Response: { ok: true, data: 'Category jackets added successfully' } --
 
 > GET http://localhost:4040/category/categories
-> Response: { ok: true, data: [ { category: hats }, { category: jackets } ] }
+> Response: { ok: true, data: [ { category: hats }, { category: jackets } ] } --
 
 > POST http://localhost:4040/product/add
 > Request's body object: { category: "hats", product: { name: "cowboy hat", price: "10", color: "black", description: "best hat in town" } }
