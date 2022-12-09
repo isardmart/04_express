@@ -2,9 +2,13 @@ const products = require('../models/products');
 const { categories } = require('./category');
 class Products{
     async  add (req, res) {
-        let { product } = req.body;
+        let body = req.body;
         try{
-            const done = await products.create({product});
+            const done = await products.create({name: body.product['name'],
+                price: body.product['price'],
+                color: body.product['color'],
+                description: body.product['description'],
+                category: body.category});
             res.send(done)
         }
         catch(e){

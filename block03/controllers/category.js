@@ -6,7 +6,7 @@ class Categories {
     let { category } = req.body;
     try{
         const done = await categories.create({category});
-        res.send(done)
+        res.send(done);
     }
     catch(e){
         res.send({e})
@@ -14,9 +14,10 @@ class Categories {
     }
 
     async delete (req,res){
-        let{category}=req.body;
+        let category=req.body;
         try{
-            const done =await categories.deleteOne({category})
+            const done =await categories.deleteOne(category);
+            res.send(done);
         }
         catch(e){
             res.send({e})
@@ -24,9 +25,14 @@ class Categories {
     }
 
     async update (req,res){
-        let{category}=req.body;
+        let oldcategory=req.body.old_category;
+        let newcategory=req.body.new_category;
         try{
-            const done =await categories.updateOne({category})
+            const done =await categories.updateOne(
+                {'category':oldcategory},
+                {$set:{'category':newcategory}}
+            );
+            res.send(done);
         }
         catch(e){
             res.send({e})
