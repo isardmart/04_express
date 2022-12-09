@@ -55,22 +55,22 @@
 
 > POST http://localhost:4040/product/add
 > Request's body object: { category: "hats", product: { name: "cowboy hat", price: "10", color: "black", description: "best hat in town" } }
-> Response: { ok: true, data: 'product cowboy hat added successfully' }
+> Response: { ok: true, data: 'product cowboy hat added successfully' } ---
 
 > POST http://localhost:4040/product/add
 > Request's body object: { category: "hats", product: { name: "cowboy hat", price: "10", color: "black", description: "best hat in town" } }
-> Response: { ok: true, data: 'product cowboy hat already exists' }
+> Response: { ok: true, data: 'product cowboy hat already exists' } ---
 
 > GET http://localhost:4040/product/cowboy%20hat
-> Response: { ok: true, data: { name: "cowboy hat", price: 10, color: "black", description: "best hat in town", category: "hats" } }
+> Response: { ok: true, data: { name: "cowboy hat", price: 10, color: "black", description: "best hat in town", category: "hats" } } ---
 
 > GET http://localhost:4040/product/banana
-> Response: { ok: true, data: "Product banana doesn't exist" }
+> Response: { ok: true, data: "Product banana doesn't exist" } --
 
 > Response: { ok: true, data: [ { name: 'cowboy hat', price: '10', color: 'black', description: 'best hat in town', category: "hats" } ] }
 
 > GET http://localhost:4040/category/banana
-> Response: { ok: true, data: "Category banana doesn't exist" }
+> Response: { ok: true, data: "Category banana doesn't exist" } ---
 
 > GET http://localhost:4040/product/ ( should return all the products in all databases )
 > Response: { ok: true, data: [ { name: 'cowboy hat', price: 10, color: 'black', description: 'best hat in town', category: 'hats' } ] }

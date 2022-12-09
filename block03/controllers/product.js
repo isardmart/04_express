@@ -71,15 +71,15 @@ class Products {
     }
   }
   async product(req, res) {
-    let { prod } = req.params;
+    let {product} = req.params;
     try {
-      const allcategories = await categories.find({});
-      const don = allcategories.filter((value) => value.category == category);
-      if (!don) {
-        const done = await products.findOne({ prod });
-        res.send({ ok: true, data: [done] });
-      } else {
-        res.send({ ok: true, data: `category ${category} doesn't exists` });
+      const done = await products.findOne({ name: product });
+      console.log(done)
+      if (done){
+        console.log('isempty')
+        res.send(done)
+      }else{
+      res.send({ ok: true, data: `Product ${product} doesn't exist` });
       }
     } catch (e) {
       res.send(e);

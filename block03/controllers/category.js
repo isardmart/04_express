@@ -23,7 +23,7 @@ class Categories {
       if (done.deletedCount === 0) {
         res.send({ ok: true, data: `Category ${category} doesn't exist` });
       } else {
-        const deleted = await products.deleteMany({category });
+        const deleted = await products.deleteMany({ category });
         res.send({
           ok: true,
           data: `Category ${category} deleted successfully`,
@@ -101,7 +101,7 @@ class Categories {
         data: { category: categoryDB[0].category, products: productsDB },
       });
     } catch (e) {
-      res.send(e);
+      res.send({ ok: true, data: `Category ${category} doesn't exist` });
     }
   }
 }
