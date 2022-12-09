@@ -1,35 +1,56 @@
 const products = require('../models/products');
-const { categories } = require('./category');
+const categories = require('../models/categories');
 class Products{
     async  add (req, res) {
-        let body = req.body;
+        let {category,product} = req.body;
+        console.log(req.body,category)
+        if (categories.find({category})){
         try{
-            const done = await products.create({name: body.product['name'],
-                price: body.product['price'],
-                color: body.product['color'],
-                description: body.product['description'],
-                category: body.category});
-            res.send(done)
+            const done = await products.create({name: product.name,
+                price: product.price,
+                color: product.color,
+                description: product.description,
+                category: category});
+            res.send({ ok: true, data: `product ${product.name} added successfully` })
         }
         catch(e){
+            if (products.find(product)){
+                res.send({ ok: true, data: `product ${product.name} already exists` })
+            }else{
             res.send({e})
+            }
+        }}
+        else{
+            res.send({ ok: true, data: `category ${category} doesn't exists` })
         }
         }
     async delete (req,res){
-        let { product } = req.body;
+        let { name } = req.body;
         try{
-            const done = await products.remove({product});
-            res.send(done)
+            const done = await products.deleteOne({name});
+            if(done.deletedCount==0){
+                res.send({ ok: true, data: `product ${name} doesn't exists` });
+            }else{
+            res.send({ ok: true, data: `product ${name} deleted successfully` })
+            }
         }
         catch(e){
             res.send({e})
         }
     }
     async update (req,res){
-        let { product } = req.body;
+        let oldproduct=req.body.old_product;
+        let newproduct=req.body.new_product;
         try{
-            const done = await products.updateOne({product});
-            res.send(done)
+            const done =await products.updateOne(
+                {oldproduct},
+                {'name':newproduct.name}
+            );
+            if (done.modifiedCount==0){
+                res.send({ ok: true, data: `product ${oldproduct.name} doesn't exists` })
+            }else{
+            res.send({ ok: true, data: `product ${newproduct.name} updated successfully` });
+            }
         }
         catch(e){
             res.send({e})
@@ -39,17 +60,7 @@ class Products{
         let {prod}=req.params
         try{
             const done =await products.findOne({prod});
-            res.send(done)
-        }
-        catch(e){
-            res.send(e)
-        }
-    }
-
-    async get_all(req,res){
-        try{
-            const done =await products.find({});
-            res.send(done)
+            res.send({ ok: true, data: [done] })
         }
         catch(e){
             res.send(e)

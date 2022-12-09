@@ -8,7 +8,7 @@ app.use(express.urlencoded({extended:true}));
 
 async function connecting(){
     try {
-        await mongoose.connect("mongodb+srv://tonigali:oqArtxQ6eOlBUNkj@productsdb.zltowpx.mongodb.net/myFirstDatabase")
+        await mongoose.connect("mongodb+srv://tonigali:JeGb887ePlCGfVEX@productsdb.zltowpx.mongodb.net/myFirstDatabase")
         console.log('Connected to the DB')
     } catch ( error ) {
         console.log('ERROR: Seems like your DB is not running, please start it up !!!');

@@ -8,6 +8,8 @@ router.post('/delete',controller.delete)
 
 router.get('/categories',controller.categories) 
 
+router.get ('/products',controller.all)
+
 router.get('/:category',controller.category)
 
 module.exports = router;
