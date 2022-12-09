@@ -2,37 +2,40 @@ const products = require('../models/products');
 const categories = require('../models/categories');
 class Products{
     async  add (req, res) {
-        let {category,product} = req.body;
-        console.log(req.body,category)
-        if (categories.find({category})){
+        const {category,product} = req.body;
         try{
+            const allcategories=await categories.find({})
+            const don=allcategories.filter(value=>value.category==category)
+            if (!don){
             const done = await products.create({name: product.name,
                 price: product.price,
                 color: product.color,
                 description: product.description,
                 category: category});
             res.send({ ok: true, data: `product ${product.name} added successfully` })
+            }else{
+                res.send({ ok: true, data: `category ${category} doesn't exists` })
+            }
         }
         catch(e){
-            if (products.find(product)){
+            const allproducts=await products.find({})
+            const don=allproducts.map(value=>{if (value.name==product.name){return true}})
+            if (don){
                 res.send({ ok: true, data: `product ${product.name} already exists` })
             }else{
             res.send({e})
             }
-        }}
-        else{
-            res.send({ ok: true, data: `category ${category} doesn't exists` })
         }
         }
     async delete (req,res){
         let { name } = req.body;
         try{
             const done = await products.deleteOne({name});
-            if(done.deletedCount==0){
-                res.send({ ok: true, data: `product ${name} doesn't exists` });
-            }else{
-            res.send({ ok: true, data: `product ${name} deleted successfully` })
-            }
+                if(done.deletedCount==0){
+                    res.send({ ok: true, data: `product ${name} doesn't exists` });
+                }else{
+                res.send({ ok: true, data: `product ${name} deleted successfully` })
+                }
         }
         catch(e){
             res.send({e})
@@ -59,8 +62,15 @@ class Products{
     async product(req,res){
         let {prod}=req.params
         try{
+            const allcategories=await categories.find({})
+            const don=allcategories.filter(value=>value.category==category)
+            if (!don){
             const done =await products.findOne({prod});
             res.send({ ok: true, data: [done] })
+            }else{
+            res.send({ ok: true, data: `category ${category} doesn't exists` })
+            }
+
         }
         catch(e){
             res.send(e)
