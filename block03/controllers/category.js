@@ -5,53 +5,53 @@ class Categories {
   async add(req, res) {
     let { category } = req.body;
     try {
-      const done = await categories.create({ category });
-      res.send({ ok: true, data: `Category ${category} added successfully` });
-    } catch (e) {
-      if (categories.findOne({ category })) {
+      const found = await categories.findOne({ category });
+      if (found) {
         res.send({ ok: true, data: `Category ${category} already exists` });
-      } else {
-        res.send({ e });
+      }else{
+        await categories.create({ category });
+        res.send({ ok: true, data: `Category ${category} added successfully` });
       }
+    } catch (e) {
+      res.send({ ok: false, data: { e } });
     }
   }
 
   async delete(req, res) {
     let { category } = req.body;
     try {
-      const done = await categories.deleteOne({ category });
-      if (done.deletedCount === 0) {
-        res.send({ ok: true, data: `Category ${category} doesn't exist` });
-      } else {
-        const deleted = await products.deleteMany({ category });
+      const done = await categories.findOneAndRemove({ category });
+      if (done) {
+        await products.deleteMany({ category });
         res.send({
           ok: true,
           data: `Category ${category} deleted successfully`,
         });
+        } else {
+          res.send({ ok: true, data: `Category ${category} doesn't exist` });
       }
     } catch (e) {
-      res.send({ e });
+      res.send({ ok: false, data: { e } });
     }
   }
 
   async update(req, res) {
-    let oldcategory = req.body.old_category;
-    let newcategory = req.body.new_category;
+    const{old_category,new_category}=req.body;
     try {
-      const done = await categories.updateOne(
-        { oldcategory },
-        { category: newcategory }
+      const updated = await categories.findOneAndUpdate(
+        { old_category },
+        { category: new_category }
       );
-      if (done.modifiedCount == 0) {
-        res.send({ ok: true, data: `Category ${oldcategory} doesn't exist` });
+      if (updated.modifiedCount == 0) {
+        res.send({ ok: true, data: `Category ${old_category} doesn't exist` });
       } else {
         res.send({
           ok: true,
-          data: `Category ${newcategory} updated successfully`,
+          data: `Category ${new_category} updated successfully`,
         });
       }
     } catch (e) {
-      res.send({ e });
+      res.send({ ok: false, data: { e } });
     }
   }
 
@@ -67,7 +67,7 @@ class Categories {
         ],
       });
     } catch (e) {
-      res.send(e);
+      res.send({ ok: false, data: { e } });
     }
   }
 
@@ -87,21 +87,27 @@ class Categories {
         ],
       });
     } catch (e) {
-      res.send(e);
+      res.send({ ok: false, data: { e } });
     }
   }
 
   async category(req, res) {
     let { category } = req.params;
     try {
+      const found = await categories.findOne({ category });
+      if (found) {
+        res.send({ ok: true, data: `Category ${category} doesn't exist` });
+      }else{
       const categoryDB = await categories.find({ category });
       const productsDB = await products.find({ category });
       res.send({
         ok: true,
         data: { category: categoryDB[0].category, products: productsDB },
       });
+    }
+      
     } catch (e) {
-      res.send({ ok: true, data: `Category ${category} doesn't exist` });
+      res.send({ ok: false, data: { e } })
     }
   }
 }
